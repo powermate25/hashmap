@@ -30,8 +30,8 @@ class HashMap {
 
         if (totalKeys < maxThreshold) { return false }
         else if (totalKeys === maxThreshold) {
-            clog("max threshold reached!")
-            clog(totalKeys)
+            // clog("max threshold reached!")
+            // clog(totalKeys)
             return true
         }
         
@@ -102,25 +102,90 @@ class HashMap {
         this.loadState()
     }
 
-    get (key) {
-        let index = this.hash(key)
-        return this.buckets[index]
-    }
-
-    has (key) {
-        let index = this.hash(key)
-        if (this.buckets[index]) {
-            return true 
+    get(searchKey) {
+        let result = null
+        for (let k in this.buckets) {
+            let temp = this.buckets[k]
+            while (temp) {
+                // clog(temp)
+                if(temp.key === searchKey) {
+                    // clog("🚨 Found!")
+                    return result = temp.value
+                }
+            temp = temp.nextNode
+            }
+            if (searchKey === this.buckets[k].key) {
+                return result = this.buckets[k].value
+            }
         }
-        else {return false} 
+        return result
     }
 
-    remove(key) {
-        if ( this.has(key) ) {
-            let index = this.hash(key)
-            delete this.buckets[index]
+    has (searchKey) {
+        let result = false
+        for (let k in this.buckets) {
+            let temp = this.buckets[k]
+            while (temp) {
+                // clog(temp)
+                if(temp.key === searchKey) {
+                    // clog("🚨 Found!")
+                    return result = true
+                }
+            temp = temp.nextNode
+            }
+            if (searchKey === this.buckets[k].key) {
+                return result = true
+            }
+        }
+        return result
+    }
+
+    remove(searchKey) {
+        // Main if condition start
+        if ( this.has(searchKey) ) {
+            let result = false
+            // for loop start
+            for (let k in this.buckets) {
+
+                let temp = this.buckets[k]
+                let prevN
+                // while loop start
+                while (temp) {
+                    if (temp.key !== searchKey) {
+                        prevN = temp
+                    }
+
+                    if(temp.key === searchKey) {
+                        if(prevN) {
+                            clog("♻ Found! Now removing nested node element.")
+                            clog(temp)
+                            prevN.nextNode = temp.nextNode
+                            this.loadAlert --
+                        }
+                        else {
+                            clog("♻ Found! Now removing Head node element")
+                            clog(temp)
+                            temp = temp.nextNode
+                            this.buckets[k] = temp
+                            this.loadAlert --
+                        }
+                        
+                        return result = true
+                    }
+
+                temp = temp.nextNode
+                }
+                // while loop end
+
+                if (searchKey === this.buckets[k].key) {
+                    return result = true
+                }
+            }
+            // for loop end
+
             this.loadAlert --
         }
+        // Main if condition end
     }
 
     length() {
@@ -136,16 +201,16 @@ class HashMap {
 
     keys() {
         let result = []
-        for (let key in this.buckets) {
-            if( this.buckets[key] ) {
-                let temp = this.buckets[key]
+        for (let k in this.buckets) {
+            if( this.buckets[k] ) {
+                let temp = this.buckets[k]
 
                 while (temp.nextNode) {
-                result.push (temp.nextNode)
+                result.push (temp.nextNode.key)
                 temp = temp.nextNode
                 }
                 
-                result.push(this.buckets[key])
+                result.push(this.buckets[k].key)
             }
         }
         return result
@@ -153,16 +218,16 @@ class HashMap {
 
     values() {
         let result = []
-        for (let key in this.buckets) {
-            if( this.buckets[key] ) {
-                let temp = this.buckets[key]
-
+        for (let k in this.buckets) {
+            if( this.buckets[k] ) {
+                let temp = this.buckets[k]
+                
                 while (temp.nextNode) {
                 result.push (temp.nextNode.value)
                 temp = temp.nextNode
                 }
                 
-                result.push(this.buckets[key].value)
+                result.push(this.buckets[k].value)
             }
         }
         return result
@@ -192,7 +257,7 @@ let test = new HashMap()
 /* test.set('Fred', "Fred's first data 1")
 test.set('Fred', "Fred's second data 2") */
 
-test.set('apple', 'red')
+/* test.set('apple', 'red')
 test.set('banana', 'yellow')
 test.set('carrot', 'orange')
 test.set('dog', 'brown')
@@ -204,17 +269,16 @@ test.set('ice cream', 'white')
 test.set('jacket', 'blue')
 test.set('kite', 'pink')
 test.set('lion', 'golden')
-test.set('Fred', "Fred's first data 1")
-test.set('Fred', "Fred's first data 2")
-test.set('Fred', "Fred's first data 3")
+test.set('moon', 'silver')
 
-clog("📂 Folder info: ")
 
-// clog(test.remove("Fred")) 
+clog(test.entries())
 
+clog("📂 Final folder info: ")
 clog(test) 
 
-clog( test.length() ) 
-// clog( test.clear() )
-clog( test.entries() )
+ */
+
+export { HashMap, clog }
+
 
