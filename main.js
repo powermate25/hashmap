@@ -2,42 +2,49 @@
 import { clog, HashMap } from "./hashmap.js"
 import { HashSet } from "./hashset.js"
 
-let test = new HashMap()
+// HashMap
+clog("HashMap Logger")
+let testHashMap = new HashMap()
+testHashMap.set('apple', 'red')
+testHashMap.set('banana', 'yellow')
+testHashMap.set('carrot', 'orange')
+testHashMap.set('dog', 'brown')
+testHashMap.set('elephant', 'gray')
+testHashMap.set('frog', 'green')
+testHashMap.set('grape', 'purple')
+testHashMap.set('hat', 'black')
+testHashMap.set('ice cream', 'white')
+testHashMap.set('jacket', 'blue')
+testHashMap.set('kite', 'pink')
+testHashMap.set('lion', 'golden')
+testHashMap.set('lion', 'golden now updated') // Just update the data without incrementing loadState
+testHashMap.set('lion', 'golden now updated again 3') // Just update the data without incrementing loadState
+testHashMap.set('moon', 'silver')
+testHashMap.set('moon', 'Moon data updated now') // Just update the data without incrementing loadState
 
-test.set('apple', 'red')
-test.set('banana', 'yellow')
-test.set('carrot', 'orange')
-test.set('dog', 'brown')
-test.set('elephant', 'gray')
-test.set('frog', 'green')
-test.set('grape', 'purple')
-test.set('hat', 'black')
-test.set('ice cream', 'white')
-test.set('jacket', 'blue')
-test.set('kite', 'pink')
-test.set('lion', 'golden')
-test.set('moon', 'silver')
+clog(testHashMap.has("lion"))  
+clog(testHashMap)
 
-/* clog(test.remove("dog")) 
-clog(test) */  
+// HashSet
+clog("HashSet Logger")
+let testHashSet = new HashSet()
+testHashSet.set('apple')
+testHashSet.set('banana')
+testHashSet.set('carrot')
+testHashSet.set('dog')
+testHashSet.set('elephant')
+testHashSet.set('frog')
+testHashSet.set('grape')
+testHashSet.set('hat')
+testHashSet.set('ice cream')
+testHashSet.set('jacket')
+testHashSet.set('kite')
+testHashSet.set('lion')
+testHashSet.set('lion') // Just update the data without incrementing loadState
+testHashSet.set('moon')
 
-/* let testSet = new HashSet()
 
-testSet.set('apple')
-testSet.set('banana')
-testSet.set('carrot')
-testSet.set('dog')
-testSet.set('elephant')
-testSet.set('frog')
-testSet.set('grape')
-testSet.set('hat')
-testSet.set('ice cream')
-testSet.set('jacket')
-testSet.set('kite')
-testSet.set('lion')
-testSet.set('moon') */
-
-/* clog(testSet) 
-clog( testSet.has("dog") )     */           
+clog( testHashSet.has("moon") )
+clog(testHashSet) 
 
 

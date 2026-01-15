@@ -13,7 +13,6 @@ class HashSet {
             }
         }
         this.loadAlert = 0
-        // this.loadAlert = this.loadState()
     }
 
     newNode(key, nextNode) {
@@ -24,14 +23,8 @@ class HashSet {
     loadState() {
         let totalKeys = this.loadAlert
         let maxThreshold = this.loadFactor * this.capacity
-
-        if (totalKeys < maxThreshold) { return false }
-        else if (totalKeys === maxThreshold) {
-            clog("max threshold reached!")
-            clog(totalKeys)
-            return true
-        }
-        
+        if (totalKeys < maxThreshold) return false
+        else if (totalKeys === maxThreshold) return true
     }
 
     hash(key) {
@@ -46,16 +39,14 @@ class HashSet {
 
     set(key) {
         let index = this.hash(key)
-        clog(key, index)
         if (index < 0 || index >= this.buckets.length) {
             throw new Error("Trying to access index out of bounds");
         }
 
         this.loadState()
 
-        if ( this.loadState() ) {
-            clog("📢Load factor reached!")
-            clog("🔔 Will now double buckets number.")
+        // Now checking for existing data before incrementing loadState
+        if ( this.loadState() && !this.has(key) ) {
             const bucketsBackup = this.buckets
             const newCapacity = this.capacity * 2
             const newBuckets = new Array(newCapacity)
@@ -71,12 +62,10 @@ class HashSet {
             this.buckets = newBuckets 
         }
 
-        
         const newData = this.newNode(key)
         let oldData = this.buckets[index]
         while ( oldData ) {
             if (oldData.key === newData.key ) {
-                clog("Key already exist. Will now update data")
                 oldData.key = newData.key
                 this.loadAlert --
                 return
@@ -104,14 +93,14 @@ class HashSet {
             let result = null
             for (let k in this.buckets) {
                 let temp = this.buckets[k]
+
                 while (temp) {
-                    // clog(temp)
                     if(temp.key === searchKey) {
-                        // clog("🚨 Found!")
                         return result = temp.key
                     }
                 temp = temp.nextNode
                 }
+
                 if (searchKey === this.buckets[k].key) {
                     return result = this.buckets[k].key
                 }
@@ -124,9 +113,7 @@ class HashSet {
             for (let k in this.buckets) {
                 let temp = this.buckets[k]
                 while (temp) {
-                    // clog(temp)
                     if(temp.key === searchKey) {
-                        // clog("🚨 Found!")
                         return result = true
                     }
                 temp = temp.nextNode
@@ -144,7 +131,6 @@ class HashSet {
                 let result = false
                 // for loop start
                 for (let k in this.buckets) {
-    
                     let temp = this.buckets[k]
                     let prevN
                     // while loop start
@@ -155,19 +141,14 @@ class HashSet {
     
                         if(temp.key === searchKey) {
                             if(prevN) {
-                                clog("♻ Found! Now removing nested node element.")
-                                clog(temp)
                                 prevN.nextNode = temp.nextNode
                                 this.loadAlert --
                             }
                             else {
-                                clog("♻ Found! Now removing Head node element")
-                                clog(temp)
                                 temp = temp.nextNode
                                 this.buckets[k] = temp
                                 this.loadAlert --
                             }
-                            
                             return result = true
                         }
     
@@ -251,25 +232,3 @@ class HashSet {
 }
 
 export { HashSet }
-
-
-let testSet = new HashSet()
-
-testSet.set('apple')
-testSet.set('banana')
-testSet.set('carrot')
-testSet.set('dog')
-testSet.set('elephant')
-testSet.set('frog')
-testSet.set('grape')
-testSet.set('hat')
-testSet.set('ice cream')
-testSet.set('jacket')
-testSet.set('kite')
-testSet.set('lion')
-testSet.set('moon')
-
-
-clog( testSet.entries() ) 
-
-clog(testSet) 

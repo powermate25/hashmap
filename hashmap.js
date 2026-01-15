@@ -16,7 +16,6 @@ class HashMap {
             }
         }
         this.loadAlert = 0
-        // this.loadAlert = this.loadState()
     }
 
     newNode(key, value, nextNode) {
@@ -27,14 +26,8 @@ class HashMap {
     loadState() {
         let totalKeys = this.loadAlert
         let maxThreshold = this.loadFactor * this.capacity
-
-        if (totalKeys < maxThreshold) { return false }
-        else if (totalKeys === maxThreshold) {
-            // clog("max threshold reached!")
-            // clog(totalKeys)
-            return true
-        }
-        
+        if (totalKeys < maxThreshold) return false
+        else if (totalKeys === maxThreshold) return true  
     }
 
     hash(key) {
@@ -55,9 +48,8 @@ class HashMap {
 
         this.loadState()
 
-        if ( this.loadState() ) {
-            clog("📢Load factor reached!")
-            clog("🔔 Will now double buckets number.")
+        // Now checking for existing data before incrementing loadState
+        if ( this.loadState() && !this.has(key) ) {
             const bucketsBackup = this.buckets
             const newCapacity = this.capacity * 2
             const newBuckets = new Array(newCapacity)
@@ -78,7 +70,6 @@ class HashMap {
         let oldData = this.buckets[index]
         while ( oldData ) {
             if (oldData.key === newData.key ) {
-                clog("Key already exist. Will now update data")
                 oldData.value = newData.value
                 this.loadAlert --
                 return
@@ -107,9 +98,7 @@ class HashMap {
         for (let k in this.buckets) {
             let temp = this.buckets[k]
             while (temp) {
-                // clog(temp)
                 if(temp.key === searchKey) {
-                    // clog("🚨 Found!")
                     return result = temp.value
                 }
             temp = temp.nextNode
@@ -126,9 +115,7 @@ class HashMap {
         for (let k in this.buckets) {
             let temp = this.buckets[k]
             while (temp) {
-                // clog(temp)
                 if(temp.key === searchKey) {
-                    // clog("🚨 Found!")
                     return result = true
                 }
             temp = temp.nextNode
@@ -157,14 +144,10 @@ class HashMap {
 
                     if(temp.key === searchKey) {
                         if(prevN) {
-                            clog("♻ Found! Now removing nested node element.")
-                            clog(temp)
                             prevN.nextNode = temp.nextNode
                             this.loadAlert --
                         }
                         else {
-                            clog("♻ Found! Now removing Head node element")
-                            clog(temp)
                             temp = temp.nextNode
                             this.buckets[k] = temp
                             this.loadAlert --
@@ -251,33 +234,6 @@ class HashMap {
     }
 
 }
-
-let test = new HashMap()
-
-/* test.set('Fred', "Fred's first data 1")
-test.set('Fred', "Fred's second data 2") */
-
-/* test.set('apple', 'red')
-test.set('banana', 'yellow')
-test.set('carrot', 'orange')
-test.set('dog', 'brown')
-test.set('elephant', 'gray')
-test.set('frog', 'green')
-test.set('grape', 'purple')
-test.set('hat', 'black')
-test.set('ice cream', 'white')
-test.set('jacket', 'blue')
-test.set('kite', 'pink')
-test.set('lion', 'golden')
-test.set('moon', 'silver')
-
-
-clog(test.entries())
-
-clog("📂 Final folder info: ")
-clog(test) 
-
- */
 
 export { HashMap, clog }
 
